@@ -1,0 +1,29 @@
+; ============================================
+; Conveyor Line Control (コンベアライン制御)
+; Mitsubishi MELSEC Mnemonic Format
+; ============================================
+; X010: Emergency stop (非常停止, b接点)
+; X001: Start button (起動ボタン)
+; X002: Stop button (停止ボタン)
+; X003: Product sensor (製品検知センサー)
+; Y001: Conveyor motor (コンベアモータ)
+; Y002: Warning light (警告灯)
+; T0:   Delay timer (遅延タイマー)
+;
+; Rung 1: Motor start with e-stop + self-hold
+; Rung 2: Stop button resets motor
+; Rung 3: Warning light (motor AND sensor)
+; Rung 4: Delayed stop timer (10sec)
+; ============================================
+LDI X010
+AND X001
+OR  Y001
+OUT Y001
+LD  X002
+RST Y001
+LD  Y001
+AND X003
+OUT Y002
+LD  Y001
+OUT T0 K100
+END

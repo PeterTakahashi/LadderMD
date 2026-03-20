@@ -1,0 +1,7 @@
+; Timer Circuit (タイマー回路)
+; X001 ON for 10 seconds -> Y001 ON
+LD  X001
+OUT T0 K100
+LD  T0
+OUT Y001
+END

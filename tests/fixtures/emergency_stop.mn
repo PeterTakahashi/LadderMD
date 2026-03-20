@@ -1,0 +1,9 @@
+; Emergency Stop Circuit (非常停止回路)
+; X010: NC emergency stop (b-contact)
+; X001: Start button
+; Y001: Motor output with self-hold
+LDI X010
+AND X001
+OR  Y001
+OUT Y001
+END

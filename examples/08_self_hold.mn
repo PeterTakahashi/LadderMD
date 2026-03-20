@@ -1,0 +1,19 @@
+; ============================================
+; Self-Hold Circuit (自己保持回路)
+; Mitsubishi MELSEC Mnemonic Format
+; ============================================
+; X001: Start button (起動ボタン)
+; X002: Safety confirm (安全確認)
+; X003: Stop button (停止ボタン)
+; Y001: Motor output (モータ出力)
+;
+; Rung 1: Y001 = (X001 AND X002) OR Y001
+; Rung 2: X003 resets Y001
+; ============================================
+LD  X001
+AND X002
+OR  Y001
+OUT Y001
+LD  X003
+RST Y001
+END

@@ -1,0 +1,9 @@
+; Interlock Circuit (インターロック回路)
+; Y001 and Y002 cannot be ON simultaneously
+LD  X001
+ANI X002
+OUT Y001
+LD  X002
+ANI X001
+OUT Y002
+END

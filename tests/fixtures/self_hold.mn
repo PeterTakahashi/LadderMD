@@ -1,0 +1,10 @@
+; Self-Hold Circuit (自己保持回路)
+; Y001 = (X001 AND X002) OR Y001
+; X003 resets Y001
+LD  X001
+AND X002
+OR  Y001
+OUT Y001
+LD  X003
+RST Y001
+END

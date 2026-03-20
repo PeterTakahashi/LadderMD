@@ -224,7 +224,7 @@ cargo bench
 
 ### Mid-term (v1.x)
 
-- [ ] Mitsubishi GX Works mnemonic format input -- covering the dominant PLC platform in Japanese manufacturing
+- [x] Mitsubishi GX Works mnemonic format input -- covering the dominant PLC platform in Japanese manufacturing
 - [ ] MCP (Model Context Protocol) server -- enabling AI agents to read and write ladder diagrams directly
 - [ ] Web API (axum) -- conversion as a service
 

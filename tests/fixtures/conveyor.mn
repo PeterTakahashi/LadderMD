@@ -1,0 +1,14 @@
+; Conveyor Line Control (コンベアライン制御)
+; Rung 1: Motor start with e-stop and self-hold
+; Rung 2: Stop button resets motor
+; Rung 3: Warning light when motor + sensor
+LDI X010
+AND X001
+OR  Y001
+OUT Y001
+LD  X002
+RST Y001
+LD  Y001
+AND X003
+OUT Y002
+END
