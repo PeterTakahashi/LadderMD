@@ -1,0 +1,39 @@
+# LadderMD
+
+**Konverter für SPS-Kontaktpläne nach Markdown/DSL**
+
+LadderMD wandelt SPS-Kontaktpläne aus PLCopen-XML und dem Mitsubishi-Mnemonik-Format in menschenlesbare und KI-lesbare Markdown-Dokumente um.
+
+![LadderMD-Konzept](/images/ladder-concept.svg)
+
+## Warum LadderMD
+
+### SPS-Kontaktpläne sind in proprietären Silos eingesperrt
+
+SPS-Kontaktpläne bilden das Rückgrat der Fabrikautomation weltweit. Dennoch bleiben sie in herstellerspezifischen Binärformaten gefangen -- Mitsubishi GX Works, Omron Sysmac und Siemens TIA Portal verwenden jeweils eigene geschlossene Dateiformate. Man kann keinen `git diff` auf einen Kontaktplan ausführen. Man kann nicht mit `grep` nach einem Variablennamen suchen. Man kann Änderungen an der Steuerungslogik nicht in einem Pull Request überprüfen.
+
+### LLMs und KI-Agenten können keine Steuerungslogik lesen
+
+Moderne KI-Agenten verarbeiten Text -- Markdown, Code, strukturierte Daten. Cloudflares Initiative [Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/) zeigt die Richtung: Alle Inhalte sollten als Text für die maschinelle Verarbeitung darstellbar sein. Für SPS-Kontaktpläne existiert keine solche Textdarstellung.
+
+### Wissenstransfer scheitert
+
+In der Fertigung laufen Kontaktplanprogramme, die vor 20-30 Jahren geschrieben wurden, noch immer in der Produktion, während der ursprüngliche Autor längst im Ruhestand ist. Würden Kontaktpläne als Text vorliegen, könnte ein LLM sie erklären. Heute können sie jedoch nur in herstellerspezifischer Software angezeigt werden.
+
+## Was LadderMD leistet
+
+- Parst PLCopen-XML (IEC 61131-10) und das Mitsubishi-MELSEC-Mnemonik-Format
+- Rendert als Markdown mit Logikausdrücken, Gerätetabellen und ASCII-Kontaktplänen
+- Validiert Roundtrip-Äquivalenz (XML → Modell → XML)
+- In Rust geschrieben, parst einfache Schaltungen in ~20 Mikrosekunden
+- Bibliothek-zuerst-Architektur: CLI, Web-API, MCP-Server, Python/Node.js-Bindings, Desktop-App
+
+## Demo
+
+### `laddermd convert`
+
+![laddermd convert Demo](/images/demo-convert.svg)
+
+### `laddermd validate`
+
+![laddermd validate Demo](/images/demo-validate.svg)

@@ -1,0 +1,97 @@
+# Mitsubishi-Mnemonik-Format
+
+LadderMD unterstützt das Mitsubishi-MELSEC-Mnemonik-Format (Anweisungsliste), das in GX Works / GX Developer verwendet wird.
+
+## Befehlssatz
+
+### Kontaktbefehle
+
+| Befehl | Bedeutung |
+|--------|-----------|
+| `LD` | Laden -- neuen Rung beginnen, Schließer-Kontakt |
+| `LDI` | Laden Invers -- neuen Rung beginnen, Öffner-Kontakt |
+| `AND` | Serien-UND, Schließer-Kontakt |
+| `ANI` | Serien-UND, Öffner-Kontakt |
+| `OR` | Parallel-ODER, Schließer-Kontakt |
+| `ORI` | Parallel-ODER, Öffner-Kontakt |
+
+### Ausgangsbefehle
+
+| Befehl | Bedeutung |
+|--------|-----------|
+| `OUT` | Ausgangsspule |
+| `SET` | Setzspule (Selbsthaltung) |
+| `RST` | Rücksetzspule |
+| `OUT T_ K_` | Timer-Ausgang (z.B. `OUT T0 K100`) |
+| `OUT C_ K_` | Zähler-Ausgang (z.B. `OUT C0 K10`) |
+
+### Blockverknüpfung
+
+| Befehl | Bedeutung |
+|--------|-----------|
+| `ORB` | ODER-Block -- Parallelpfade zusammenführen |
+| `ANB` | UND-Block -- Serienblöcke zusammenführen |
+
+### Stapel (Verzweigung)
+
+| Befehl | Bedeutung |
+|--------|-----------|
+| `MPS` | Aktuelles Ergebnis auf den Stapel legen |
+| `MRD` | Stapelspitze lesen (Peek) |
+| `MPP` | Stapelspitze entnehmen (Pop) |
+
+### Programmsteuerung
+
+| Befehl | Bedeutung |
+|--------|-----------|
+| `END` | Programmende |
+
+## Beispiele
+
+### Selbsthaltung
+
+```
+LD  X001
+AND X002
+OR  Y001
+OUT Y001
+LD  X003
+RST Y001
+END
+```
+
+### Verriegelung
+
+```
+LD  X001
+ANI X002
+OUT Y001
+LD  X002
+ANI X001
+OUT Y002
+END
+```
+
+### ORB (Parallelblöcke)
+
+```
+LD  X001
+AND X002
+LD  X003
+AND X004
+ORB
+OUT Y001
+END
+```
+
+### Timer + Zähler
+
+```
+LD  X001
+OUT T0 K100
+LD  T0
+OUT Y001
+LD  X002
+OUT C0 K10
+END
+```

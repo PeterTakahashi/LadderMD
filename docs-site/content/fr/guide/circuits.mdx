@@ -1,0 +1,50 @@
+# Circuits supportes
+
+## Circuits de base
+
+| Circuit | Description | Fichier de test |
+|---------|-------------|-----------------|
+| Auto-maintien | Verrouillage avec contact de maintien + reinitialisation | `self_hold.xml` |
+| Interverrouillage | Exclusion mutuelle via contacts NC | `interlock.xml` |
+| Temporisateur | Bloc temporisateur TON a retard a l'enclenchement | `timer.xml` |
+| Arret d'urgence | Arret d'urgence NC + auto-maintien | `emergency_stop.xml` |
+
+## Blocs compteurs
+
+| Bloc | Description |
+|------|-------------|
+| CTU | Compteur croissant -- incremente sur front montant, Q=ON quand CV{'>='}PV |
+| CTD | Compteur decroissant -- decremente sur front montant, Q=ON quand CV{'<='}0 |
+
+## Blocs de comparaison et d'arithmetique
+
+| Bloc | Description |
+|------|-------------|
+| GT, GE, EQ, LE, LT, NE | Operateurs de comparaison |
+| ADD, SUB, MUL, DIV, MOD | Operateurs arithmetiques |
+
+## Exemple de circuit d'auto-maintien
+
+```
+|--[X001]--[X002]--+--(Y001)|
+|                  |        |
+|--[Y001]---------+        |
+|                           |
+|--[X003]-----------(R Y001)|
+```
+
+Logique : `Y001 = (X001 AND X002) OR Y001`, reinitialise par X003.
+
+Le motif PLC le plus fondamental. Appuyez sur DEMARRAGE (X001) pendant que SECURITE (X002) est confirme pour verrouiller Y001 a ON. Il reste a ON via le contact d'auto-maintien jusqu'a ce que ARRET (X003) le reinitialise.
+
+## Exemple de circuit d'arret d'urgence
+
+```
+|--[/X010]--[X001]--+--(Y001)|
+|                   |        |
+|---[Y001]---------+        |
+```
+
+Logique : `Y001 = NOT X010 AND (X001 OR Y001)`
+
+Utilise un contact NC (normalement ferme) pour l'arret d'urgence. Si le fil se rompt, le contact s'ouvre -- le systeme bascule en mode securite.

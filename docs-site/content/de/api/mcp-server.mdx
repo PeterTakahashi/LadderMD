@@ -1,0 +1,74 @@
+# MCP-Server
+
+LadderMD stellt einen [Model Context Protocol](https://modelcontextprotocol.io/)-Server bereit, der KI-Agenten ermöglicht, Kontaktpläne direkt zu lesen und zu schreiben.
+
+## Einrichtung
+
+```bash
+cargo build --bin laddermd-mcp --release
+```
+
+### Claude Code / Claude Desktop
+
+Fügen Sie folgendes zu Ihrer MCP-Konfiguration hinzu:
+
+```json
+{
+  "mcpServers": {
+    "laddermd": {
+      "command": "/path/to/laddermd-mcp"
+    }
+  }
+}
+```
+
+## Verfügbare Tools
+
+### `convert_xml_to_markdown`
+
+PLCopen-XML in menschenlesbares Markdown umwandeln.
+
+| Parameter | Typ | Erforderlich | Beschreibung |
+|-----------|-----|-------------|-------------|
+| `xml` | string | Ja | PLCopen-XML-Inhalt |
+
+### `convert_mnemonic_to_markdown`
+
+Mitsubishi-MELSEC-Mnemonik-Format in Markdown umwandeln.
+
+| Parameter | Typ | Erforderlich | Beschreibung |
+|-----------|-----|-------------|-------------|
+| `mnemonic` | string | Ja | Mnemonik-Programmtext |
+
+### `convert_mnemonic_to_xml`
+
+Mnemonik in PLCopen-XML umwandeln.
+
+| Parameter | Typ | Erforderlich | Beschreibung |
+|-----------|-----|-------------|-------------|
+| `mnemonic` | string | Ja | Mnemonik-Programmtext |
+
+### `convert_xml_to_mnemonic`
+
+PLCopen-XML in Mnemonik-Format umwandeln.
+
+| Parameter | Typ | Erforderlich | Beschreibung |
+|-----------|-----|-------------|-------------|
+| `xml` | string | Ja | PLCopen-XML-Inhalt |
+
+### `validate_roundtrip`
+
+Roundtrip-Konvertierung von PLCopen-XML validieren.
+
+| Parameter | Typ | Erforderlich | Beschreibung |
+|-----------|-----|-------------|-------------|
+| `xml` | string | Ja | PLCopen-XML-Inhalt |
+
+### `get_info`
+
+Zusammenfassende Informationen über einen Kontaktplan abrufen.
+
+| Parameter | Typ | Erforderlich | Beschreibung |
+|-----------|-----|-------------|-------------|
+| `input` | string | Ja | XML- oder Mnemonik-Inhalt |
+| `format` | string | Nein | `"xml"` (Standard) oder `"mnemonic"` |

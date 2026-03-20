@@ -1,0 +1,44 @@
+# Format de sortie (LadderMD)
+
+Chaque barreau (rung) est rendu avec trois sections :
+
+## 1. Expression logique
+
+Formule booleenne decrivant le barreau :
+
+```
+LOGIC: Y001 = (X001 AND X002 OR Y001)
+```
+
+## 2. Table des peripheriques
+
+Tous les contacts, bobines et blocs du barreau :
+
+```
+| Device | Type        | LocalId |
+|--------|-------------|---------|
+| X001   | Contact(NO) | 2       |
+| X002   | Contact(NO) | 3       |
+| Y001   | Coil        | 5       |
+```
+
+## 3. Diagramme ladder ASCII
+
+Representation visuelle du circuit :
+
+```
+|--[X001]--[X002]--+--(Y001)|
+|--[Y001]--+        |
+```
+
+## Reference des symboles
+
+| Symbole | Signification |
+|---------|---------------|
+| `[X001]` | Contact normalement ouvert (NO / contact a) |
+| `[/X001]` | Contact normalement ferme (NC / contact b) |
+| `(Y001)` | Bobine de sortie |
+| `(S Y001)` | Bobine de maintien (Set) |
+| `(R Y001)` | Bobine de reinitialisation (Reset) |
+| `[TON T1]` | Bloc fonctionnel (ex. : temporisateur) |
+| `--+--` | Jonction de branche parallele (OR) |

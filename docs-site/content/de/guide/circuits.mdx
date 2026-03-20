@@ -1,0 +1,50 @@
+# Unterstützte Schaltungen
+
+## Grundschaltungen
+
+| Schaltung | Beschreibung | Testdatei |
+|-----------|-------------|-----------|
+| Selbsthaltung | Speicherschaltung mit Selbsthaltekontakt + Rücksetzung | `self_hold.xml` |
+| Verriegelung | Gegenseitiger Ausschluss über Öffner-Kontakte | `interlock.xml` |
+| Timer | TON-Einschaltverzögerung | `timer.xml` |
+| Not-Aus | Öffner-Not-Aus + Selbsthaltung | `emergency_stop.xml` |
+
+## Zählerblöcke
+
+| Block | Beschreibung |
+|-------|-------------|
+| CTU | Vorwärtszähler -- inkrementiert bei steigender Flanke, Q=EIN wenn CV≥PV |
+| CTD | Rückwärtszähler -- dekrementiert bei steigender Flanke, Q=EIN wenn CV≤0 |
+
+## Vergleichs- und Arithmetikblöcke
+
+| Block | Beschreibung |
+|-------|-------------|
+| GT, GE, EQ, LE, LT, NE | Vergleichsoperatoren |
+| ADD, SUB, MUL, DIV, MOD | Arithmetikoperatoren |
+
+## Beispiel: Selbsthalteschaltung
+
+```
+|--[X001]--[X002]--+--(Y001)|
+|                  |        |
+|--[Y001]---------+        |
+|                           |
+|--[X003]-----------(R Y001)|
+```
+
+Logik: `Y001 = (X001 AND X002) OR Y001`, Rücksetzung durch X003.
+
+Das grundlegendste SPS-Muster. Drücken Sie START (X001), während SICHERHEIT (X002) bestätigt ist, um Y001 einzuschalten. Der Ausgang bleibt über den Selbsthaltekontakt eingeschaltet, bis STOP (X003) ihn zurücksetzt.
+
+## Beispiel: Not-Aus-Schaltung
+
+```
+|--[/X010]--[X001]--+--(Y001)|
+|                   |        |
+|---[Y001]---------+        |
+```
+
+Logik: `Y001 = NOT X010 AND (X001 OR Y001)`
+
+Verwendet einen Öffner-Kontakt (NC) für den Not-Aus. Wenn die Leitung unterbrochen wird, öffnet der Kontakt -- das System geht in den sicheren Zustand.

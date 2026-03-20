@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="200" viewBox="0 0 780 200">
+  <defs>
+    <style>
+      .bg { fill: #f8f9fa; }
+      .rail { stroke: #495057; stroke-width: 3; fill: none; }
+      .wire { stroke: #495057; stroke-width: 2; fill: none; }
+      .contact-box { fill: #e3f2fd; stroke: #1976d2; stroke-width: 2; rx: 4; ry: 4; }
+      .coil-box { fill: #fce4ec; stroke: #c62828; stroke-width: 2; }
+      .label { fill: #212529; font-family: 'SF Mono', 'Menlo', monospace; font-size: 13px; font-weight: bold; text-anchor: middle; }
+      .arrow { fill: #6c757d; font-family: 'Arial', sans-serif; font-size: 40px; text-anchor: middle; }
+      .phase-label { fill: #495057; font-family: 'Arial', 'Helvetica', sans-serif; font-size: 12px; text-anchor: middle; }
+      .format-label { fill: #1976d2; font-family: 'SF Mono', 'Menlo', monospace; font-size: 11px; text-anchor: middle; font-weight: bold; }
+      .xml-box { fill: #fff3e0; stroke: #e65100; stroke-width: 2; rx: 8; ry: 8; }
+      .md-box { fill: #e8f5e9; stroke: #2e7d32; stroke-width: 2; rx: 8; ry: 8; }
+      .xml-text { fill: #e65100; font-family: 'SF Mono', 'Menlo', monospace; font-size: 10px; }
+      .md-text { fill: #2e7d32; font-family: 'SF Mono', 'Menlo', monospace; font-size: 10px; }
+    </style>
+  </defs>
+
+  <!-- PLCopen XML box -->
+  <rect class="xml-box" x="20" y="20" width="200" height="160"/>
+  <text class="format-label" x="120" y="42" fill="#e65100">PLCopen XML</text>
+  <text class="xml-text" x="35" y="62">&lt;contact negated="false"&gt;</text>
+  <text class="xml-text" x="35" y="78">  &lt;variable&gt;X001&lt;/variable&gt;</text>
+  <text class="xml-text" x="35" y="94">&lt;/contact&gt;</text>
+  <text class="xml-text" x="35" y="114">&lt;coil storage="reset"&gt;</text>
+  <text class="xml-text" x="35" y="130">  &lt;variable&gt;Y001&lt;/variable&gt;</text>
+  <text class="xml-text" x="35" y="146">&lt;/coil&gt;</text>
+  <text class="xml-text" x="35" y="166">&lt;connection refLocalId="2"/&gt;</text>
+
+  <!-- Arrow 1 -->
+  <text class="arrow" x="260" y="115">&#x2192;</text>
+  <text class="phase-label" x="260" y="140">laddermd</text>
+  <text class="phase-label" x="260" y="155">convert</text>
+
+  <!-- LadderMD box -->
+  <rect class="md-box" x="300" y="20" width="200" height="160"/>
+  <text class="format-label" x="400" y="42" fill="#2e7d32">LadderMD</text>
+  <text class="md-text" x="315" y="62"># Project: SelfHoldTest</text>
+  <text class="md-text" x="315" y="82">LOGIC: Y001 = (X001 AND</text>
+  <text class="md-text" x="315" y="96">  X002 OR Y001)</text>
+  <text class="md-text" x="315" y="120">|--[X001]--[X002]--+--(Y001)|</text>
+  <text class="md-text" x="315" y="136">|--[Y001]--+        |</text>
+  <text class="md-text" x="315" y="160">|--[X003]--(R Y001)|</text>
+
+  <!-- Arrow 2 (roundtrip) -->
+  <text class="arrow" x="540" y="115">&#x21C4;</text>
+  <text class="phase-label" x="540" y="140">laddermd</text>
+  <text class="phase-label" x="540" y="155">validate</text>
+
+  <!-- Roundtrip result -->
+  <rect x="580" y="20" width="180" height="160" rx="8" ry="8" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2"/>
+  <text class="format-label" x="670" y="42" fill="#2e7d32">Roundtrip Check</text>
+
+  <text x="670" y="78" text-anchor="middle" fill="#2e7d32" font-family="Arial" font-size="36" font-weight="bold">&#x2713;</text>
+  <text x="670" y="110" text-anchor="middle" fill="#2e7d32" font-family="'SF Mono', monospace" font-size="11">Parse OK</text>
+  <text x="670" y="128" text-anchor="middle" fill="#2e7d32" font-family="'SF Mono', monospace" font-size="11">Roundtrip OK</text>
+  <text x="670" y="150" text-anchor="middle" fill="#495057" font-family="'SF Mono', monospace" font-size="10">XML -&gt; Model -&gt; XML</text>
+  <text x="670" y="166" text-anchor="middle" fill="#495057" font-family="'SF Mono', monospace" font-size="10">Logically equivalent</text>
+</svg>

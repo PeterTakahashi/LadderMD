@@ -1,0 +1,74 @@
+# MCP Server
+
+LadderMD provides a [Model Context Protocol](https://modelcontextprotocol.io/) server, enabling AI agents to read and write ladder diagrams directly.
+
+## Setup
+
+```bash
+cargo build --bin laddermd-mcp --release
+```
+
+### Claude Code / Claude Desktop
+
+Add to your MCP configuration:
+
+```json
+{
+  "mcpServers": {
+    "laddermd": {
+      "command": "/path/to/laddermd-mcp"
+    }
+  }
+}
+```
+
+## Available Tools
+
+### `convert_xml_to_markdown`
+
+Convert PLCopen XML to human-readable Markdown.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `xml` | string | Yes | PLCopen XML content |
+
+### `convert_mnemonic_to_markdown`
+
+Convert Mitsubishi MELSEC mnemonic format to Markdown.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `mnemonic` | string | Yes | Mnemonic program text |
+
+### `convert_mnemonic_to_xml`
+
+Convert mnemonic to PLCopen XML.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `mnemonic` | string | Yes | Mnemonic program text |
+
+### `convert_xml_to_mnemonic`
+
+Convert PLCopen XML to mnemonic format.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `xml` | string | Yes | PLCopen XML content |
+
+### `validate_roundtrip`
+
+Validate roundtrip conversion of PLCopen XML.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `xml` | string | Yes | PLCopen XML content |
+
+### `get_info`
+
+Get summary information about a ladder diagram.
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `input` | string | Yes | XML or mnemonic content |
+| `format` | string | No | `"xml"` (default) or `"mnemonic"` |

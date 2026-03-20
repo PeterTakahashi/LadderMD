@@ -1,0 +1,18 @@
+{
+  "name": "laddermd",
+  "version": "0.1.0",
+  "description": "PLC ladder diagram converter - PLCopen XML and Mitsubishi mnemonic to Markdown",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "napi": {
+    "name": "laddermd",
+    "triples": {}
+  },
+  "scripts": {
+    "build": "napi build --release",
+    "build:debug": "napi build"
+  },
+  "devDependencies": {
+    "@napi-rs/cli": "^2"
+  }
+}

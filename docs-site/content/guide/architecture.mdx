@@ -1,0 +1,59 @@
+# Architecture
+
+## Project Structure
+
+```
+laddermd/
+├── crates/
+│   ├── laddermd-core/       # Library crate (CLI-independent)
+│   │   └── src/
+│   │       ├── model.rs     # Internal data model
+│   │       ├── parser/      # PLCopen XML + Mnemonic → Model
+│   │       ├── renderer/    # Model → Markdown
+│   │       ├── writer/      # Model → PLCopen XML
+│   │       └── validator/   # Roundtrip equivalence check
+│   ├── laddermd-cli/        # CLI binary
+│   ├── laddermd-web/        # Web API (axum)
+│   ├── laddermd-mcp/        # MCP server
+│   ├── laddermd-python/     # Python bindings (PyO3)
+│   ├── laddermd-node/       # Node.js bindings (napi-rs)
+│   └── laddermd-desktop/    # Desktop app (Tauri)
+└── tests/fixtures/          # Test files
+```
+
+## Core Library API
+
+The core library (`laddermd-core`) has no CLI dependencies:
+
+```rust
+use laddermd_core::{parser, renderer::MarkdownRenderer, writer, validator};
+
+// Parse PLCopen XML
+let project = parser::parse(&xml_string)?;
+
+// Parse Mitsubishi mnemonic
+let project = parser::parse_mnemonic(&mnemonic_string, None, None)?;
+
+// Render to Markdown
+let renderer = MarkdownRenderer::default();
+let markdown = renderer.render(&project);
+
+// Write back to XML
+let xml_output = writer::write(&project)?;
+
+// Write to mnemonic
+let mn_output = parser::write_mnemonic(&project);
+
+// Validate roundtrip
+let result = validator::validate(&xml_string)?;
+assert!(result.roundtrip_ok);
+```
+
+## Benchmarks
+
+| Fixture | Parse Time |
+|---------|-----------|
+| self_hold.xml | ~24 us |
+| interlock.xml | ~22 us |
+| timer.xml | ~21 us |
+| emergency_stop.xml | ~16 us |

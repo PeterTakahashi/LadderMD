@@ -1,0 +1,39 @@
+# LadderMD
+
+**PLCラダー図をMarkdown/DSLに変換するコンバーター**
+
+LadderMDはPLCラダー図をPLCopen XMLおよび三菱ニモニック形式から、人間とAIが読めるMarkdownに変換します。
+
+![LadderMDのコンセプト](/images/ladder-concept.svg)
+
+## なぜLadderMDを作ったのか
+
+### PLCラダー図は「電気屋の世界」に閉じている
+
+PLCラダー図は工場の自動化を支える基盤技術ですが、三菱GX Works、オムロンSysmac、シーメンスTIA Portalなど各メーカー独自のバイナリ形式で保存されています。`git diff`で差分を見ることも、`grep`で変数名を検索することも、プルリクエストで制御ロジックの変更をレビューすることもできません。
+
+### LLM/AIエージェントが制御ロジックを読めない
+
+現代のAIエージェントはテキストを処理します -- Markdown、コード、構造化データ。Cloudflareの[Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/)がHTMLのMarkdown変換を推進しているように、すべてのコンテンツはテキストとして機械が消費できるべきです。しかしPLCラダー図にはそのようなテキスト表現が存在しません。
+
+### 技術継承の危機
+
+製造業の現場では、20〜30年前に書かれたラダープログラムが今も本番稼働しています。しかし元の設計者はとうに退職しています。ラダー図がテキストとして存在していれば、LLMが説明できます。しかし現状、各メーカーの専用ソフトでしか閲覧できません。
+
+## LadderMDが解決すること
+
+- PLCopen XML（IEC 61131-10）と三菱MELSECニモニック形式をパース
+- 論理式・デバイステーブル・ASCIIラダー図をMarkdownで出力
+- 往復変換（XML → モデル → XML）で論理的等価性を検証
+- Rustで実装、基本回路のパースが約20マイクロ秒
+- ライブラリファースト: CLI、Web API、MCPサーバー、Python/Node.jsバインディング、デスクトップアプリ
+
+## デモ
+
+### `laddermd convert`
+
+![laddermd convert デモ](/images/demo-convert.svg)
+
+### `laddermd validate`
+
+![laddermd validate デモ](/images/demo-validate.svg)

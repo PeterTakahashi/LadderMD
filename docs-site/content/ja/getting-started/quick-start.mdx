@@ -1,0 +1,43 @@
+# クイックスタート
+
+## PLCopen XMLをMarkdownに変換
+
+```bash
+laddermd-cli convert input.xml
+laddermd-cli convert input.xml -o output.md
+```
+
+## 三菱ニモニックをMarkdownに変換
+
+```bash
+laddermd-cli convert input.mn
+```
+
+## プロジェクト情報の表示
+
+```bash
+$ laddermd-cli info input.xml
+Project: SelfHoldTest
+  Program: Main
+    Rungs: 2
+    Contacts: 4, Coils: 2, Blocks: 0
+```
+
+## 往復変換の検証
+
+```bash
+$ laddermd-cli validate input.xml
+Parse OK: 2 rungs found
+Devices: 4 contacts, 2 coils, 0 blocks
+Roundtrip OK: all rungs logically equivalent
+```
+
+## フォーマット変換
+
+```bash
+# 三菱ニモニック → PLCopen XML
+laddermd-cli mn2xml input.mn -o output.xml
+
+# PLCopen XML → 三菱ニモニック
+laddermd-cli xml2mn input.xml -o output.mn
+```

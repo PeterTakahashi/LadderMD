@@ -1,0 +1,39 @@
+# LadderMD
+
+**PLC ladder diagram to Markdown/DSL converter**
+
+LadderMD converts PLC ladder diagrams from PLCopen XML and Mitsubishi mnemonic format into human- and AI-readable Markdown.
+
+![LadderMD concept](/images/ladder-concept.svg)
+
+## Why LadderMD
+
+### PLC ladder diagrams are locked in proprietary silos
+
+PLC ladder diagrams are the backbone of factory automation worldwide. Yet they remain trapped inside vendor-specific binary formats -- Mitsubishi GX Works, Omron Sysmac, Siemens TIA Portal each use their own closed file format. You cannot `git diff` a ladder diagram. You cannot `grep` for a variable name. You cannot review control logic changes in a pull request.
+
+### LLMs and AI agents cannot read control logic
+
+Modern AI agents process text -- Markdown, code, structured data. Cloudflare's [Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/) initiative demonstrates the direction: all content should be representable as text for machine consumption. PLC ladder diagrams have no such text representation.
+
+### Knowledge transfer is failing
+
+In manufacturing, ladder programs written 20-30 years ago still run in production, with the original author long retired. If ladder diagrams existed as text, an LLM could explain them. But today, they can only be viewed in vendor-specific software.
+
+## What LadderMD Does
+
+- Parses PLCopen XML (IEC 61131-10) and Mitsubishi MELSEC mnemonic format
+- Renders to Markdown with logic expressions, device tables, and ASCII ladder diagrams
+- Validates roundtrip equivalence (XML → Model → XML)
+- Written in Rust, parses basic circuits in ~20 microseconds
+- Library-first architecture: CLI, Web API, MCP server, Python/Node.js bindings, desktop app
+
+## Demo
+
+### `laddermd convert`
+
+![laddermd convert demo](/images/demo-convert.svg)
+
+### `laddermd validate`
+
+![laddermd validate demo](/images/demo-validate.svg)

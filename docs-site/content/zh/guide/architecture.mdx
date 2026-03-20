@@ -1,0 +1,59 @@
+# 架构
+
+## 项目结构
+
+```
+laddermd/
+├── crates/
+│   ├── laddermd-core/       # 核心库 crate（不依赖 CLI）
+│   │   └── src/
+│   │       ├── model.rs     # 内部数据模型
+│   │       ├── parser/      # PLCopen XML + 助记符 → 模型
+│   │       ├── renderer/    # 模型 → Markdown
+│   │       ├── writer/      # 模型 → PLCopen XML
+│   │       └── validator/   # 往返等价性检查
+│   ├── laddermd-cli/        # CLI 二进制文件
+│   ├── laddermd-web/        # Web API（axum）
+│   ├── laddermd-mcp/        # MCP 服务器
+│   ├── laddermd-python/     # Python 绑定（PyO3）
+│   ├── laddermd-node/       # Node.js 绑定（napi-rs）
+│   └── laddermd-desktop/    # 桌面应用（Tauri）
+└── tests/fixtures/          # 测试文件
+```
+
+## 核心库 API
+
+核心库（`laddermd-core`）不依赖任何 CLI：
+
+```rust
+use laddermd_core::{parser, renderer::MarkdownRenderer, writer, validator};
+
+// 解析 PLCopen XML
+let project = parser::parse(&xml_string)?;
+
+// 解析三菱助记符
+let project = parser::parse_mnemonic(&mnemonic_string, None, None)?;
+
+// 渲染为 Markdown
+let renderer = MarkdownRenderer::default();
+let markdown = renderer.render(&project);
+
+// 写回 XML
+let xml_output = writer::write(&project)?;
+
+// 写入助记符
+let mn_output = parser::write_mnemonic(&project);
+
+// 验证往返转换
+let result = validator::validate(&xml_string)?;
+assert!(result.roundtrip_ok);
+```
+
+## 基准测试
+
+| 测试文件 | 解析时间 |
+|---------|-----------|
+| self_hold.xml | ~24 us |
+| interlock.xml | ~22 us |
+| timer.xml | ~21 us |
+| emergency_stop.xml | ~16 us |

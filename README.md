@@ -59,7 +59,7 @@ LadderMD converts PLC ladder diagrams from PLCopen XML (the international standa
 
 ```bash
 # Clone and build
-git clone https://github.com/yourname/laddermd.git
+git clone https://github.com/PeterTakahashi/LadderMD.git
 cd laddermd
 cargo build --release
 
@@ -225,13 +225,12 @@ cargo bench
 ### Mid-term (v1.x)
 
 - [x] Mitsubishi GX Works mnemonic format input -- covering the dominant PLC platform in Japanese manufacturing
-- [ ] MCP (Model Context Protocol) server -- enabling AI agents to read and write ladder diagrams directly
-- [ ] Web API (axum) -- conversion as a service
+- [x] MCP (Model Context Protocol) server -- enabling AI agents to read and write ladder diagrams directly
+- [x] Web API (axum) -- conversion as a service
+- [x] Desktop viewer (Tauri)
+- [x] Python bindings (PyO3) / Node.js bindings (napi-rs)
 
 ### Long-term
-
-- [ ] Desktop viewer (Tauri)
-- [ ] Python bindings (PyO3) / Node.js bindings (napi-rs)
 - [ ] LLM-powered circuit analysis and safety verification -- e.g., "Does this emergency stop circuit have any gaps?" or "Is this interlock correctly implemented?"
 
 ## License

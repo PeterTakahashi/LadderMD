@@ -1,0 +1,27 @@
+# Node.jsバインディング
+
+[napi-rs](https://napi.rs/)によるNode.jsバインディングです。
+
+## インストール
+
+```bash
+cd crates/laddermd-node
+npm install
+npx napi build --release --target aarch64-apple-darwin
+```
+
+## API
+
+```javascript
+const { convertXml, convertMnemonic, validate } = require('./laddermd.node')
+
+// PLCopen XML → Markdown
+const md = convertXml(fs.readFileSync('circuit.xml', 'utf8'))
+
+// ニモニック → Markdown
+const md2 = convertMnemonic('LD X001\nOUT Y001\nEND')
+
+// 往復変換検証
+const result = validate(xmlString)
+// { parseOk: true, roundtripOk: true, ... }
+```

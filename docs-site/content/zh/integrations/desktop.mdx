@@ -1,0 +1,31 @@
+# 桌面应用
+
+LadderMD 包含一个基于 [Tauri](https://tauri.app/) 构建的桌面查看器。
+
+## 功能特性
+
+- 深色模式界面（Catppuccin Mocha 主题）
+- 将 PLCopen XML 和三菱助记符转换为 Markdown
+- 往返验证
+- XML 与助记符格式互转
+- 左右分栏的输入/输出面板
+
+## 构建
+
+```bash
+cd crates/laddermd-desktop
+cargo tauri dev     # 开发模式
+cargo tauri build   # 生产构建
+```
+
+## 命令
+
+桌面应用从后端暴露以下 Tauri 命令：
+
+| 命令 | 说明 |
+|---------|-------------|
+| `convert_xml` | PLCopen XML → Markdown |
+| `convert_mnemonic` | 助记符 → Markdown |
+| `validate_xml` | 往返验证 |
+| `xml_to_mnemonic` | XML → 助记符 |
+| `mnemonic_to_xml` | 助记符 → XML |

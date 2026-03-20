@@ -1,0 +1,19 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicegui-org/nicegui/refs/heads/main/tauri_conf_schema.json",
+  "productName": "LadderMD",
+  "identifier": "com.laddermd.app",
+  "version": "0.1.0",
+  "build": {
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "LadderMD - Ladder Diagram Viewer",
+        "width": 1200,
+        "height": 800
+      }
+    ]
+  }
+}

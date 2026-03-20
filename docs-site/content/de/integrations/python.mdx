@@ -1,0 +1,64 @@
+# Python-Bindings
+
+LadderMD bietet Python-Bindings über [PyO3](https://pyo3.rs/).
+
+## Installation
+
+```bash
+cd crates/laddermd-python
+python3 -m venv .venv && source .venv/bin/activate
+pip install maturin
+maturin develop
+```
+
+## API
+
+### `convert_xml(xml, *, no_diagram=False, no_table=False, no_logic=False)`
+
+PLCopen-XML in Markdown umwandeln.
+
+```python
+import laddermd
+
+md = laddermd.convert_xml(open("circuit.xml").read())
+print(md)
+```
+
+### `convert_mnemonic(mnemonic, *, no_diagram=False, no_table=False, no_logic=False)`
+
+Mitsubishi-Mnemonik in Markdown umwandeln.
+
+```python
+md = laddermd.convert_mnemonic("LD X001\nAND X002\nOUT Y001\nEND")
+```
+
+### `mnemonic_to_xml(mnemonic)`
+
+Mnemonik in PLCopen-XML umwandeln.
+
+```python
+xml = laddermd.mnemonic_to_xml("LD X001\nOUT Y001\nEND")
+```
+
+### `xml_to_mnemonic(xml)`
+
+PLCopen-XML in Mnemonik umwandeln.
+
+### `validate(xml)`
+
+Roundtrip-Konvertierung validieren. Gibt ein Dictionary zurück:
+
+```python
+result = laddermd.validate(xml_string)
+# {'parse_ok': True, 'roundtrip_ok': True, 'total_rungs': 2,
+#  'contacts': 4, 'coils': 2, 'blocks': 0, 'errors': []}
+```
+
+### `info(input, format="xml")`
+
+Projektinformationen abrufen.
+
+```python
+info = laddermd.info(mnemonic_text, "mnemonic")
+# {'project_name': 'MnemonicProject', 'programs': [...]}
+```

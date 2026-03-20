@@ -1,0 +1,83 @@
+# Web API
+
+Web API 基于 [axum](https://github.com/tokio-rs/axum) 运行，提供 REST 接口。
+
+```bash
+cargo run --bin laddermd-web
+# 监听 http://localhost:3000
+```
+
+## 接口列表
+
+### `GET /health`
+
+健康检查。返回 `ok`。
+
+### `POST /api/convert`
+
+将 PLCopen XML 或助记符转换为 Markdown。
+
+```json
+{
+  "input": "<project>...</project>",
+  "format": "xml",
+  "no_diagram": false,
+  "no_table": false,
+  "no_logic": false
+}
+```
+
+响应：
+
+```json
+{
+  "markdown": "# Project: ...",
+  "project_name": "SelfHoldTest",
+  "program_count": 1,
+  "rung_count": 2
+}
+```
+
+### `POST /api/validate`
+
+验证往返转换。
+
+```json
+{ "xml": "<project>...</project>" }
+```
+
+### `POST /api/mn2xml`
+
+将助记符转换为 PLCopen XML。
+
+```json
+{ "mnemonic": "LD X001\nOUT Y001\nEND" }
+```
+
+### `POST /api/xml2mn`
+
+将 PLCopen XML 转换为助记符。
+
+```json
+{ "xml": "<project>...</project>" }
+```
+
+### `POST /api/info`
+
+获取项目信息。
+
+```json
+{ "input": "...", "format": "xml" }
+```
+
+## CORS
+
+默认启用所有来源的 CORS（`CorsLayer::permissive()`）。
+
+## 示例
+
+```bash
+curl -X POST http://localhost:3000/api/convert \
+  -H 'Content-Type: application/json' \
+  -d '{"input":"LD X001\nAND X002\nOUT Y001\nEND","format":"mnemonic"}'
+```

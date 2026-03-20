@@ -1,0 +1,83 @@
+# Web API
+
+The Web API runs on [axum](https://github.com/tokio-rs/axum) and provides REST endpoints.
+
+```bash
+cargo run --bin laddermd-web
+# Listening on http://localhost:3000
+```
+
+## Endpoints
+
+### `GET /health`
+
+Health check. Returns `ok`.
+
+### `POST /api/convert`
+
+Convert PLCopen XML or mnemonic to Markdown.
+
+```json
+{
+  "input": "<project>...</project>",
+  "format": "xml",
+  "no_diagram": false,
+  "no_table": false,
+  "no_logic": false
+}
+```
+
+Response:
+
+```json
+{
+  "markdown": "# Project: ...",
+  "project_name": "SelfHoldTest",
+  "program_count": 1,
+  "rung_count": 2
+}
+```
+
+### `POST /api/validate`
+
+Validate roundtrip conversion.
+
+```json
+{ "xml": "<project>...</project>" }
+```
+
+### `POST /api/mn2xml`
+
+Convert mnemonic to PLCopen XML.
+
+```json
+{ "mnemonic": "LD X001\nOUT Y001\nEND" }
+```
+
+### `POST /api/xml2mn`
+
+Convert PLCopen XML to mnemonic.
+
+```json
+{ "xml": "<project>...</project>" }
+```
+
+### `POST /api/info`
+
+Get project information.
+
+```json
+{ "input": "...", "format": "xml" }
+```
+
+## CORS
+
+CORS is enabled for all origins by default (`CorsLayer::permissive()`).
+
+## Example
+
+```bash
+curl -X POST http://localhost:3000/api/convert \
+  -H 'Content-Type: application/json' \
+  -d '{"input":"LD X001\nAND X002\nOUT Y001\nEND","format":"mnemonic"}'
+```

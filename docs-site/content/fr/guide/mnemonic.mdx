@@ -1,0 +1,97 @@
+# Format mnemonique Mitsubishi
+
+LadderMD prend en charge le format mnemonique (liste d'instructions) Mitsubishi MELSEC utilise dans GX Works / GX Developer.
+
+## Jeu d'instructions
+
+### Instructions de contact
+
+| Instruction | Signification |
+|-------------|---------------|
+| `LD` | Chargement -- debut d'un nouveau barreau, contact NO |
+| `LDI` | Chargement inverse -- debut d'un nouveau barreau, contact NC |
+| `AND` | ET en serie, contact NO |
+| `ANI` | ET en serie, contact NC |
+| `OR` | OU en parallele, contact NO |
+| `ORI` | OU en parallele, contact NC |
+
+### Instructions de sortie
+
+| Instruction | Signification |
+|-------------|---------------|
+| `OUT` | Bobine de sortie |
+| `SET` | Bobine de maintien (Set) |
+| `RST` | Bobine de reinitialisation (Reset) |
+| `OUT T_ K_` | Sortie temporisateur (ex. : `OUT T0 K100`) |
+| `OUT C_ K_` | Sortie compteur (ex. : `OUT C0 K10`) |
+
+### Connexion de blocs
+
+| Instruction | Signification |
+|-------------|---------------|
+| `ORB` | OU de blocs -- combine les chemins paralleles |
+| `ANB` | ET de blocs -- combine les blocs en serie |
+
+### Pile (branchement)
+
+| Instruction | Signification |
+|-------------|---------------|
+| `MPS` | Empiler le resultat courant sur la pile |
+| `MRD` | Lire (consulter) le sommet de la pile |
+| `MPP` | Depiler le sommet de la pile |
+
+### Controle du programme
+
+| Instruction | Signification |
+|-------------|---------------|
+| `END` | Fin du programme |
+
+## Exemples
+
+### Auto-maintien
+
+```
+LD  X001
+AND X002
+OR  Y001
+OUT Y001
+LD  X003
+RST Y001
+END
+```
+
+### Interverrouillage
+
+```
+LD  X001
+ANI X002
+OUT Y001
+LD  X002
+ANI X001
+OUT Y002
+END
+```
+
+### ORB (blocs paralleles)
+
+```
+LD  X001
+AND X002
+LD  X003
+AND X004
+ORB
+OUT Y001
+END
+```
+
+### Temporisateur + Compteur
+
+```
+LD  X001
+OUT T0 K100
+LD  T0
+OUT Y001
+LD  X002
+OUT C0 K10
+END
+```

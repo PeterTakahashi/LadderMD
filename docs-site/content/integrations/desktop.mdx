@@ -1,0 +1,31 @@
+# Desktop App
+
+LadderMD includes a desktop viewer built with [Tauri](https://tauri.app/).
+
+## Features
+
+- Dark mode UI (Catppuccin Mocha theme)
+- Convert PLCopen XML and Mitsubishi mnemonic to Markdown
+- Roundtrip validation
+- XML ↔ Mnemonic format conversion
+- Side-by-side input/output panels
+
+## Build
+
+```bash
+cd crates/laddermd-desktop
+cargo tauri dev     # Development mode
+cargo tauri build   # Production build
+```
+
+## Commands
+
+The desktop app exposes the following Tauri commands from the backend:
+
+| Command | Description |
+|---------|-------------|
+| `convert_xml` | PLCopen XML → Markdown |
+| `convert_mnemonic` | Mnemonic → Markdown |
+| `validate_xml` | Roundtrip validation |
+| `xml_to_mnemonic` | XML → Mnemonic |
+| `mnemonic_to_xml` | Mnemonic → XML |

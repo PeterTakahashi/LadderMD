@@ -1,0 +1,48 @@
+# アーキテクチャ
+
+## プロジェクト構成
+
+```
+laddermd/
+├── crates/
+│   ├── laddermd-core/       # ライブラリcrate（CLI非依存）
+│   ├── laddermd-cli/        # CLIバイナリ
+│   ├── laddermd-web/        # Web API (axum)
+│   ├── laddermd-mcp/        # MCPサーバー
+│   ├── laddermd-python/     # Pythonバインディング (PyO3)
+│   ├── laddermd-node/       # Node.jsバインディング (napi-rs)
+│   └── laddermd-desktop/    # デスクトップアプリ (Tauri)
+└── tests/fixtures/          # テストファイル
+```
+
+## コアライブラリAPI
+
+```rust
+use laddermd_core::{parser, renderer::MarkdownRenderer, writer, validator};
+
+// PLCopen XMLをパース
+let project = parser::parse(&xml_string)?;
+
+// 三菱ニモニックをパース
+let project = parser::parse_mnemonic(&mnemonic_string, None, None)?;
+
+// Markdownにレンダリング
+let renderer = MarkdownRenderer::default();
+let markdown = renderer.render(&project);
+
+// XMLに書き出し
+let xml_output = writer::write(&project)?;
+
+// 往復変換を検証
+let result = validator::validate(&xml_string)?;
+assert!(result.roundtrip_ok);
+```
+
+## ベンチマーク
+
+| テストファイル | パース時間 |
+|----------------|-----------|
+| self_hold.xml | 約24 us |
+| interlock.xml | 約22 us |
+| timer.xml | 約21 us |
+| emergency_stop.xml | 約16 us |

@@ -1,0 +1,50 @@
+# Supported Circuits
+
+## Basic Circuits
+
+| Circuit | Description | Test Fixture |
+|---------|-------------|--------------|
+| Self-hold | Latch with seal-in contact + reset | `self_hold.xml` |
+| Interlock | Mutual exclusion via NC contacts | `interlock.xml` |
+| Timer | TON on-delay timer block | `timer.xml` |
+| Emergency stop | NC emergency stop + self-hold | `emergency_stop.xml` |
+
+## Counter Blocks
+
+| Block | Description |
+|-------|-------------|
+| CTU | Count Up -- increments on rising edge, Q=ON when CV≥PV |
+| CTD | Count Down -- decrements on rising edge, Q=ON when CV≤0 |
+
+## Comparison & Arithmetic Blocks
+
+| Block | Description |
+|-------|-------------|
+| GT, GE, EQ, LE, LT, NE | Comparison operators |
+| ADD, SUB, MUL, DIV, MOD | Arithmetic operators |
+
+## Self-Hold Circuit Example
+
+```
+|--[X001]--[X002]--+--(Y001)|
+|                  |        |
+|--[Y001]---------+        |
+|                           |
+|--[X003]-----------(R Y001)|
+```
+
+Logic: `Y001 = (X001 AND X002) OR Y001`, reset by X003.
+
+The most fundamental PLC pattern. Press START (X001) while SAFETY (X002) is confirmed to latch Y001 ON. It stays ON via the self-hold contact until STOP (X003) resets it.
+
+## Emergency Stop Circuit Example
+
+```
+|--[/X010]--[X001]--+--(Y001)|
+|                   |        |
+|---[Y001]---------+        |
+```
+
+Logic: `Y001 = NOT X010 AND (X001 OR Y001)`
+
+Uses a NC (normally closed) contact for the emergency stop. If the wire breaks, the contact opens -- the system fails safe.

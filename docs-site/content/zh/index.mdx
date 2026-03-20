@@ -1,0 +1,39 @@
+# LadderMD
+
+**PLC 梯形图转 Markdown/DSL 转换器**
+
+LadderMD 将 PLCopen XML 和三菱助记符格式的 PLC 梯形图转换为人类和 AI 可读的 Markdown。
+
+![LadderMD 概念图](/images/ladder-concept.svg)
+
+## 为什么需要 LadderMD
+
+### PLC 梯形图被锁在专有格式中
+
+PLC 梯形图是全球工厂自动化的支柱，但它们至今仍被困在厂商专有的二进制格式中——三菱 GX Works、欧姆龙 Sysmac、西门子 TIA Portal 各自使用不同的封闭文件格式。你无法对梯形图执行 `git diff`，无法用 `grep` 搜索变量名，也无法在 Pull Request 中审查控制逻辑的变更。
+
+### LLM 和 AI 智能体无法读取控制逻辑
+
+现代 AI 智能体处理的是文本——Markdown、代码、结构化数据。Cloudflare 的 [Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/) 倡议正体现了这一方向：所有内容都应该能以文本形式供机器消费。然而 PLC 梯形图至今没有这样的文本表示。
+
+### 知识传承正在失败
+
+在制造业中，20-30 年前编写的梯形图程序仍在生产环境中运行，而原作者早已退休。如果梯形图以文本形式存在，LLM 就能对其进行解释。但如今，它们只能在厂商专用软件中查看。
+
+## LadderMD 能做什么
+
+- 解析 PLCopen XML（IEC 61131-10）和三菱 MELSEC 助记符格式
+- 渲染为包含逻辑表达式、设备表和 ASCII 梯形图的 Markdown
+- 验证往返等价性（XML → 模型 → XML）
+- 使用 Rust 编写，基本电路解析约 20 微秒
+- 库优先架构：CLI、Web API、MCP 服务器、Python/Node.js 绑定、桌面应用
+
+## 演示
+
+### `laddermd convert`
+
+![laddermd convert 演示](/images/demo-convert.svg)
+
+### `laddermd validate`
+
+![laddermd validate 演示](/images/demo-validate.svg)

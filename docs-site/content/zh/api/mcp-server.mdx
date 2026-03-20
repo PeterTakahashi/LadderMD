@@ -1,0 +1,74 @@
+# MCP 服务器
+
+LadderMD 提供 [Model Context Protocol](https://modelcontextprotocol.io/) 服务器，使 AI 智能体能够直接读写梯形图。
+
+## 设置
+
+```bash
+cargo build --bin laddermd-mcp --release
+```
+
+### Claude Code / Claude Desktop
+
+添加到你的 MCP 配置中：
+
+```json
+{
+  "mcpServers": {
+    "laddermd": {
+      "command": "/path/to/laddermd-mcp"
+    }
+  }
+}
+```
+
+## 可用工具
+
+### `convert_xml_to_markdown`
+
+将 PLCopen XML 转换为人类可读的 Markdown。
+
+| 参数 | 类型 | 必填 | 说明 |
+|-----------|------|----------|-------------|
+| `xml` | string | 是 | PLCopen XML 内容 |
+
+### `convert_mnemonic_to_markdown`
+
+将三菱 MELSEC 助记符格式转换为 Markdown。
+
+| 参数 | 类型 | 必填 | 说明 |
+|-----------|------|----------|-------------|
+| `mnemonic` | string | 是 | 助记符程序文本 |
+
+### `convert_mnemonic_to_xml`
+
+将助记符转换为 PLCopen XML。
+
+| 参数 | 类型 | 必填 | 说明 |
+|-----------|------|----------|-------------|
+| `mnemonic` | string | 是 | 助记符程序文本 |
+
+### `convert_xml_to_mnemonic`
+
+将 PLCopen XML 转换为助记符格式。
+
+| 参数 | 类型 | 必填 | 说明 |
+|-----------|------|----------|-------------|
+| `xml` | string | 是 | PLCopen XML 内容 |
+
+### `validate_roundtrip`
+
+验证 PLCopen XML 的往返转换。
+
+| 参数 | 类型 | 必填 | 说明 |
+|-----------|------|----------|-------------|
+| `xml` | string | 是 | PLCopen XML 内容 |
+
+### `get_info`
+
+获取梯形图的摘要信息。
+
+| 参数 | 类型 | 必填 | 说明 |
+|-----------|------|----------|-------------|
+| `input` | string | 是 | XML 或助记符内容 |
+| `format` | string | 否 | `"xml"`（默认）或 `"mnemonic"` |

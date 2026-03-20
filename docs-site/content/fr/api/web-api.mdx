@@ -1,0 +1,83 @@
+# API Web
+
+L'API Web fonctionne sur [axum](https://github.com/tokio-rs/axum) et fournit des points de terminaison REST.
+
+```bash
+cargo run --bin laddermd-web
+# Ecoute sur http://localhost:3000
+```
+
+## Points de terminaison
+
+### `GET /health`
+
+Verification de sante. Retourne `ok`.
+
+### `POST /api/convert`
+
+Convertit du PLCopen XML ou du mnemonique en Markdown.
+
+```json
+{
+  "input": "<project>...</project>",
+  "format": "xml",
+  "no_diagram": false,
+  "no_table": false,
+  "no_logic": false
+}
+```
+
+Reponse :
+
+```json
+{
+  "markdown": "# Project: ...",
+  "project_name": "SelfHoldTest",
+  "program_count": 1,
+  "rung_count": 2
+}
+```
+
+### `POST /api/validate`
+
+Valide la conversion aller-retour.
+
+```json
+{ "xml": "<project>...</project>" }
+```
+
+### `POST /api/mn2xml`
+
+Convertit du mnemonique en PLCopen XML.
+
+```json
+{ "mnemonic": "LD X001\nOUT Y001\nEND" }
+```
+
+### `POST /api/xml2mn`
+
+Convertit du PLCopen XML en mnemonique.
+
+```json
+{ "xml": "<project>...</project>" }
+```
+
+### `POST /api/info`
+
+Obtient les informations du projet.
+
+```json
+{ "input": "...", "format": "xml" }
+```
+
+## CORS
+
+CORS est active pour toutes les origines par defaut (`CorsLayer::permissive()`).
+
+## Exemple
+
+```bash
+curl -X POST http://localhost:3000/api/convert \
+  -H 'Content-Type: application/json' \
+  -d '{"input":"LD X001\nAND X002\nOUT Y001\nEND","format":"mnemonic"}'
+```

@@ -63,7 +63,7 @@ LadderMDはPLCラダー図をPLCopen XML（国際標準の交換フォーマッ�
 
 ```bash
 # クローンしてビルド
-git clone https://github.com/yourname/laddermd.git
+git clone https://github.com/PeterTakahashi/LadderMD.git
 cd laddermd
 cargo build --release
 
@@ -229,10 +229,10 @@ cargo bench
 ### 中期（v1.x）
 
 - [x] 三菱GX Worksニモニック形式の入力対応 -- 日本の製造現場で支配的なPLCプラットフォームをカバー
-- [ ] MCP（Model Context Protocol）サーバー化 -- AIエージェントがラダー図を直接読み書き可能に
-- [ ] Web API（axum）-- 変換サービスとして提供
-- [ ] デスクトップビューア（Tauri）
-- [ ] Pythonバインディング（PyO3）/ Node.jsバインディング（napi-rs）
+- [x] MCP（Model Context Protocol）サーバー化 -- AIエージェントがラダー図を直接読み書き可能に
+- [x] Web API（axum）-- 変換サービスとして提供
+- [x] デスクトップビューア（Tauri）
+- [x] Pythonバインディング（PyO3）/ Node.jsバインディング（napi-rs）
 
 ### 長期
 

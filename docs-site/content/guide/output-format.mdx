@@ -1,0 +1,44 @@
+# Output Format (LadderMD)
+
+Each rung is rendered with three sections:
+
+## 1. Logic Expression
+
+Boolean formula describing the rung:
+
+```
+LOGIC: Y001 = (X001 AND X002 OR Y001)
+```
+
+## 2. Device Table
+
+All contacts, coils, and blocks in the rung:
+
+```
+| Device | Type        | LocalId |
+|--------|-------------|---------|
+| X001   | Contact(NO) | 2       |
+| X002   | Contact(NO) | 3       |
+| Y001   | Coil        | 5       |
+```
+
+## 3. ASCII Ladder Diagram
+
+Visual representation of the circuit:
+
+```
+|--[X001]--[X002]--+--(Y001)|
+|--[Y001]--+        |
+```
+
+## Symbol Reference
+
+| Symbol | Meaning |
+|--------|---------|
+| `[X001]` | Normally Open contact (NO / a-contact) |
+| `[/X001]` | Normally Closed contact (NC / b-contact) |
+| `(Y001)` | Output coil |
+| `(S Y001)` | Set (latch) coil |
+| `(R Y001)` | Reset (unlatch) coil |
+| `[TON T1]` | Function block (e.g., timer) |
+| `--+--` | Parallel branch junction (OR) |

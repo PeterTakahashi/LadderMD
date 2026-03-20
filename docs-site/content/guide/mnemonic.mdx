@@ -1,0 +1,97 @@
+# Mitsubishi Mnemonic Format
+
+LadderMD supports the Mitsubishi MELSEC mnemonic (instruction list) format used in GX Works / GX Developer.
+
+## Instruction Set
+
+### Contact Instructions
+
+| Instruction | Meaning |
+|-------------|---------|
+| `LD` | Load -- start new rung, NO contact |
+| `LDI` | Load Inverse -- start new rung, NC contact |
+| `AND` | Series AND, NO contact |
+| `ANI` | Series AND, NC contact |
+| `OR` | Parallel OR, NO contact |
+| `ORI` | Parallel OR, NC contact |
+
+### Output Instructions
+
+| Instruction | Meaning |
+|-------------|---------|
+| `OUT` | Output coil |
+| `SET` | Set (latch) coil |
+| `RST` | Reset coil |
+| `OUT T_ K_` | Timer output (e.g., `OUT T0 K100`) |
+| `OUT C_ K_` | Counter output (e.g., `OUT C0 K10`) |
+
+### Block Connection
+
+| Instruction | Meaning |
+|-------------|---------|
+| `ORB` | OR Block -- combine parallel paths |
+| `ANB` | AND Block -- combine series blocks |
+
+### Stack (Branching)
+
+| Instruction | Meaning |
+|-------------|---------|
+| `MPS` | Push current result to stack |
+| `MRD` | Read (peek) stack top |
+| `MPP` | Pop stack top |
+
+### Program Control
+
+| Instruction | Meaning |
+|-------------|---------|
+| `END` | End of program |
+
+## Examples
+
+### Self-Hold
+
+```
+LD  X001
+AND X002
+OR  Y001
+OUT Y001
+LD  X003
+RST Y001
+END
+```
+
+### Interlock
+
+```
+LD  X001
+ANI X002
+OUT Y001
+LD  X002
+ANI X001
+OUT Y002
+END
+```
+
+### ORB (Parallel Blocks)
+
+```
+LD  X001
+AND X002
+LD  X003
+AND X004
+ORB
+OUT Y001
+END
+```
+
+### Timer + Counter
+
+```
+LD  X001
+OUT T0 K100
+LD  T0
+OUT Y001
+LD  X002
+OUT C0 K10
+END
+```

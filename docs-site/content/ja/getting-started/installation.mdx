@@ -1,0 +1,49 @@
+# インストール
+
+## CLI
+
+```bash
+git clone https://github.com/PeterTakahashi/LadderMD.git
+cd laddermd
+cargo build --release
+```
+
+バイナリは `target/release/laddermd-cli` に生成されます。Rust 1.75以上（stable）が必要です。
+
+## Web API
+
+```bash
+cargo run --bin laddermd-web
+# http://localhost:3000 でリッスン
+```
+
+## Python
+
+```bash
+cd crates/laddermd-python
+python3 -m venv .venv && source .venv/bin/activate
+pip install maturin
+maturin develop
+```
+
+## Node.js
+
+```bash
+cd crates/laddermd-node
+npm install
+npx napi build --release --target aarch64-apple-darwin
+```
+
+## MCPサーバー
+
+Claude CodeやAIエージェントの設定に追加:
+
+```json
+{
+  "mcpServers": {
+    "laddermd": {
+      "command": "/path/to/laddermd-mcp"
+    }
+  }
+}
+```

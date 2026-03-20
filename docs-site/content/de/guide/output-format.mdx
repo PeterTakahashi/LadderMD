@@ -1,0 +1,44 @@
+# Ausgabeformat (LadderMD)
+
+Jeder Rung wird mit drei Abschnitten dargestellt:
+
+## 1. Logikausdruck
+
+Boolesche Formel, die den Rung beschreibt:
+
+```
+LOGIC: Y001 = (X001 AND X002 OR Y001)
+```
+
+## 2. Gerätetabelle
+
+Alle Kontakte, Spulen und Blöcke im Rung:
+
+```
+| Device | Type        | LocalId |
+|--------|-------------|---------|
+| X001   | Contact(NO) | 2       |
+| X002   | Contact(NO) | 3       |
+| Y001   | Coil        | 5       |
+```
+
+## 3. ASCII-Kontaktplan
+
+Visuelle Darstellung der Schaltung:
+
+```
+|--[X001]--[X002]--+--(Y001)|
+|--[Y001]--+        |
+```
+
+## Symbolreferenz
+
+| Symbol | Bedeutung |
+|--------|-----------|
+| `[X001]` | Schließer-Kontakt (NO / a-Kontakt) |
+| `[/X001]` | Öffner-Kontakt (NC / b-Kontakt) |
+| `(Y001)` | Ausgangsspule |
+| `(S Y001)` | Setzspule (Selbsthaltung) |
+| `(R Y001)` | Rücksetzspule (Lösen) |
+| `[TON T1]` | Funktionsblock (z.B. Timer) |
+| `--+--` | Parallelzweig-Verbindung (ODER) |

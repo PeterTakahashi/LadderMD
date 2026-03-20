@@ -1,0 +1,26 @@
+# MCPサーバー
+
+[Model Context Protocol](https://modelcontextprotocol.io/)サーバーにより、AIエージェントがラダー図を直接読み書きできます。
+
+## セットアップ
+
+```json
+{
+  "mcpServers": {
+    "laddermd": {
+      "command": "/path/to/laddermd-mcp"
+    }
+  }
+}
+```
+
+## 利用可能なツール
+
+| ツール | 説明 |
+|--------|------|
+| `convert_xml_to_markdown` | PLCopen XML → Markdown |
+| `convert_mnemonic_to_markdown` | ニモニック → Markdown |
+| `convert_mnemonic_to_xml` | ニモニック → XML |
+| `convert_xml_to_mnemonic` | XML → ニモニック |
+| `validate_roundtrip` | 往復変換検証 |
+| `get_info` | プロジェクト情報取得 |

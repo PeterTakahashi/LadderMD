@@ -1,0 +1,58 @@
+# 快速开始
+
+## 将 PLCopen XML 转换为 Markdown
+
+```bash
+# 输出到标准输出
+laddermd-cli convert input.xml
+
+# 输出到文件
+laddermd-cli convert input.xml -o output.md
+```
+
+## 将三菱助记符转换为 Markdown
+
+```bash
+laddermd-cli convert input.mn
+```
+
+助记符文件示例：
+
+```
+LD  X001
+AND X002
+OR  Y001
+OUT Y001
+LD  X003
+RST Y001
+END
+```
+
+## 显示项目信息
+
+```bash
+$ laddermd-cli info input.xml
+Project: SelfHoldTest
+  Program: Main
+    Rungs: 2
+    Contacts: 4, Coils: 2, Blocks: 0
+```
+
+## 验证往返转换
+
+```bash
+$ laddermd-cli validate input.xml
+Parse OK: 2 rungs found
+Devices: 4 contacts, 2 coils, 0 blocks
+Roundtrip OK: all rungs logically equivalent
+```
+
+## 格式转换
+
+```bash
+# 三菱助记符 → PLCopen XML
+laddermd-cli mn2xml input.mn -o output.xml
+
+# PLCopen XML → 三菱助记符
+laddermd-cli xml2mn input.xml -o output.mn
+```

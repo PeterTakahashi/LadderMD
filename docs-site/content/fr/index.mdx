@@ -1,0 +1,39 @@
+# LadderMD
+
+**Convertisseur de diagrammes ladder PLC en Markdown/DSL**
+
+LadderMD convertit les diagrammes ladder PLC depuis les formats PLCopen XML et mnemonique Mitsubishi en Markdown lisible par les humains et les IA.
+
+![Concept LadderMD](/images/ladder-concept.svg)
+
+## Pourquoi LadderMD
+
+### Les diagrammes ladder PLC sont prisonniers de silos proprietaires
+
+Les diagrammes ladder PLC sont la colonne vertebrale de l'automatisation industrielle dans le monde entier. Pourtant, ils restent enfermes dans des formats binaires proprietaires -- Mitsubishi GX Works, Omron Sysmac, Siemens TIA Portal utilisent chacun leur propre format ferme. On ne peut pas faire un `git diff` sur un diagramme ladder. On ne peut pas faire un `grep` sur un nom de variable. On ne peut pas passer en revue les modifications de logique de controle dans une pull request.
+
+### Les LLM et les agents IA ne peuvent pas lire la logique de controle
+
+Les agents IA modernes traitent du texte -- Markdown, code, donnees structurees. L'initiative [Markdown for Agents](https://blog.cloudflare.com/markdown-for-agents/) de Cloudflare illustre cette direction : tout contenu devrait etre representable sous forme de texte pour etre consomme par les machines. Les diagrammes ladder PLC n'ont pas de telle representation textuelle.
+
+### Le transfert de connaissances echoue
+
+Dans l'industrie manufacturiere, des programmes ladder ecrits il y a 20-30 ans tournent encore en production, alors que leur auteur original est depuis longtemps parti a la retraite. Si les diagrammes ladder existaient sous forme de texte, un LLM pourrait les expliquer. Mais aujourd'hui, ils ne peuvent etre visualises que dans des logiciels proprietaires.
+
+## Ce que fait LadderMD
+
+- Parse le PLCopen XML (IEC 61131-10) et le format mnemonique Mitsubishi MELSEC
+- Genere du Markdown avec des expressions logiques, des tables de peripheriques et des diagrammes ladder ASCII
+- Valide l'equivalence aller-retour (XML -> Modele -> XML)
+- Ecrit en Rust, analyse les circuits de base en ~20 microsecondes
+- Architecture orientee bibliotheque : CLI, API Web, serveur MCP, bindings Python/Node.js, application de bureau
+
+## Demo
+
+### `laddermd convert`
+
+![Demo laddermd convert](/images/demo-convert.svg)
+
+### `laddermd validate`
+
+![Demo laddermd validate](/images/demo-validate.svg)

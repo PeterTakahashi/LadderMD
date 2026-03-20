@@ -1,0 +1,50 @@
+# Node.js 绑定
+
+LadderMD 通过 [napi-rs](https://napi.rs/) 提供 Node.js 绑定。
+
+## 安装
+
+```bash
+cd crates/laddermd-node
+npm install
+npx napi build --release --target aarch64-apple-darwin
+```
+
+## API
+
+### `convertXml(xml: string): string`
+
+将 PLCopen XML 转换为 Markdown。
+
+```javascript
+const { convertXml } = require('./laddermd.node')
+const md = convertXml(fs.readFileSync('circuit.xml', 'utf8'))
+```
+
+### `convertMnemonic(mnemonic: string): string`
+
+将三菱助记符转换为 Markdown。
+
+```javascript
+const { convertMnemonic } = require('./laddermd.node')
+const md = convertMnemonic('LD X001\nAND X002\nOUT Y001\nEND')
+```
+
+### `mnemonicToXml(mnemonic: string): string`
+
+将助记符转换为 PLCopen XML。
+
+### `xmlToMnemonic(xml: string): string`
+
+将 PLCopen XML 转换为助记符。
+
+### `validate(xml: string): ValidationResult`
+
+验证往返转换。
+
+```javascript
+const { validate } = require('./laddermd.node')
+const result = validate(xmlString)
+// { parseOk: true, roundtripOk: true, totalRungs: 2,
+//   contacts: 4, coils: 2, blocks: 0, errors: [] }
+```

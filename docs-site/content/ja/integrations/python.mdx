@@ -1,0 +1,30 @@
+# Pythonバインディング
+
+[PyO3](https://pyo3.rs/)によるPythonバインディングです。
+
+## インストール
+
+```bash
+cd crates/laddermd-python
+python3 -m venv .venv && source .venv/bin/activate
+pip install maturin && maturin develop
+```
+
+## API
+
+```python
+import laddermd
+
+# PLCopen XML → Markdown
+md = laddermd.convert_xml(open("circuit.xml").read())
+
+# ニモニック → Markdown
+md = laddermd.convert_mnemonic("LD X001\nOUT Y001\nEND")
+
+# 往復変換検証
+result = laddermd.validate(xml_string)
+# {'parse_ok': True, 'roundtrip_ok': True, ...}
+
+# プロジェクト情報
+info = laddermd.info(mn_text, "mnemonic")
+```

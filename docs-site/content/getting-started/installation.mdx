@@ -1,0 +1,61 @@
+# Installation
+
+## CLI
+
+```bash
+git clone https://github.com/PeterTakahashi/LadderMD.git
+cd laddermd
+cargo build --release
+```
+
+The binary is at `target/release/laddermd-cli`. Requires Rust 1.75+ (stable).
+
+## Web API
+
+```bash
+cargo run --bin laddermd-web
+# Listens on http://localhost:3000
+```
+
+## Python
+
+```bash
+cd crates/laddermd-python
+python3 -m venv .venv && source .venv/bin/activate
+pip install maturin
+maturin develop
+```
+
+```python
+import laddermd
+md = laddermd.convert_xml(xml_string)
+```
+
+## Node.js
+
+```bash
+cd crates/laddermd-node
+npm install
+npx napi build --release --target aarch64-apple-darwin
+```
+
+```javascript
+const { convertXml } = require('./laddermd.node')
+const md = convertXml(xmlString)
+```
+
+## MCP Server
+
+Add to your Claude Code or AI agent configuration:
+
+```json
+{
+  "mcpServers": {
+    "laddermd": {
+      "command": "cargo",
+      "args": ["run", "--bin", "laddermd-mcp"],
+      "cwd": "/path/to/laddermd"
+    }
+  }
+}
+```

@@ -1,0 +1,34 @@
+# Web API
+
+[axum](https://github.com/tokio-rs/axum)ベースのREST APIを提供します。
+
+```bash
+cargo run --bin laddermd-web
+# http://localhost:3000 でリッスン
+```
+
+## エンドポイント
+
+### `POST /api/convert`
+
+PLCopen XMLまたはニモニックをMarkdownに変換。
+
+```json
+{ "input": "LD X001\nOUT Y001\nEND", "format": "mnemonic" }
+```
+
+### `POST /api/validate`
+
+往復変換の検証。
+
+### `POST /api/mn2xml`
+
+ニモニックをPLCopen XMLに変換。
+
+### `POST /api/xml2mn`
+
+PLCopen XMLをニモニックに変換。
+
+### `POST /api/info`
+
+プロジェクト情報の取得。

@@ -1,0 +1,12 @@
+[package]
+name = "laddermd-python"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "laddermd"
+crate-type = ["cdylib"]
+
+[dependencies]
+laddermd-core = { path = "../laddermd-core" }
+pyo3 = { version = "0.24", features = ["extension-module"] }

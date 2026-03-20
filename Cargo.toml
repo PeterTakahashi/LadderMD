@@ -1,3 +1,13 @@
 [workspace]
-members = ["crates/laddermd-core", "crates/laddermd-cli"]
+members = [
+    "crates/laddermd-core",
+    "crates/laddermd-cli",
+    "crates/laddermd-web",
+    "crates/laddermd-mcp",
+]
+exclude = [
+    "crates/laddermd-python",
+    "crates/laddermd-node",
+    "crates/laddermd-desktop",
+]
 resolver = "2"

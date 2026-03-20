@@ -1,0 +1,64 @@
+# Python 绑定
+
+LadderMD 通过 [PyO3](https://pyo3.rs/) 提供 Python 绑定。
+
+## 安装
+
+```bash
+cd crates/laddermd-python
+python3 -m venv .venv && source .venv/bin/activate
+pip install maturin
+maturin develop
+```
+
+## API
+
+### `convert_xml(xml, *, no_diagram=False, no_table=False, no_logic=False)`
+
+将 PLCopen XML 转换为 Markdown。
+
+```python
+import laddermd
+
+md = laddermd.convert_xml(open("circuit.xml").read())
+print(md)
+```
+
+### `convert_mnemonic(mnemonic, *, no_diagram=False, no_table=False, no_logic=False)`
+
+将三菱助记符转换为 Markdown。
+
+```python
+md = laddermd.convert_mnemonic("LD X001\nAND X002\nOUT Y001\nEND")
+```
+
+### `mnemonic_to_xml(mnemonic)`
+
+将助记符转换为 PLCopen XML。
+
+```python
+xml = laddermd.mnemonic_to_xml("LD X001\nOUT Y001\nEND")
+```
+
+### `xml_to_mnemonic(xml)`
+
+将 PLCopen XML 转换为助记符。
+
+### `validate(xml)`
+
+验证往返转换。返回一个字典：
+
+```python
+result = laddermd.validate(xml_string)
+# {'parse_ok': True, 'roundtrip_ok': True, 'total_rungs': 2,
+#  'contacts': 4, 'coils': 2, 'blocks': 0, 'errors': []}
+```
+
+### `info(input, format="xml")`
+
+获取项目信息。
+
+```python
+info = laddermd.info(mnemonic_text, "mnemonic")
+# {'project_name': 'MnemonicProject', 'programs': [...]}
+```

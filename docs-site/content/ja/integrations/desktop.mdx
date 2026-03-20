@@ -1,0 +1,19 @@
+# デスクトップアプリ
+
+[Tauri](https://tauri.app/)製のデスクトップビューアです。
+
+## 機能
+
+- ダークモードUI（Catppuccin Mochaテーマ）
+- PLCopen XMLと三菱ニモニックのMarkdown変換
+- 往復変換検証
+- XML ↔ ニモニック形式変換
+- 入力/出力のサイドバイサイドパネル
+
+## ビルド
+
+```bash
+cd crates/laddermd-desktop
+cargo tauri dev     # 開発モード
+cargo tauri build   # プロダクションビルド
+```

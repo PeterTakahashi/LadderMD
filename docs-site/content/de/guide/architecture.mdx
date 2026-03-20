@@ -1,0 +1,59 @@
+# Architektur
+
+## Projektstruktur
+
+```
+laddermd/
+├── crates/
+│   ├── laddermd-core/       # Bibliotheks-Crate (CLI-unabhängig)
+│   │   └── src/
+│   │       ├── model.rs     # Internes Datenmodell
+│   │       ├── parser/      # PLCopen-XML + Mnemonik → Modell
+│   │       ├── renderer/    # Modell → Markdown
+│   │       ├── writer/      # Modell → PLCopen-XML
+│   │       └── validator/   # Roundtrip-Äquivalenzprüfung
+│   ├── laddermd-cli/        # CLI-Binärdatei
+│   ├── laddermd-web/        # Web-API (axum)
+│   ├── laddermd-mcp/        # MCP-Server
+│   ├── laddermd-python/     # Python-Bindings (PyO3)
+│   ├── laddermd-node/       # Node.js-Bindings (napi-rs)
+│   └── laddermd-desktop/    # Desktop-App (Tauri)
+└── tests/fixtures/          # Testdateien
+```
+
+## Core-Bibliothek-API
+
+Die Core-Bibliothek (`laddermd-core`) hat keine CLI-Abhängigkeiten:
+
+```rust
+use laddermd_core::{parser, renderer::MarkdownRenderer, writer, validator};
+
+// PLCopen-XML parsen
+let project = parser::parse(&xml_string)?;
+
+// Mitsubishi-Mnemonik parsen
+let project = parser::parse_mnemonic(&mnemonic_string, None, None)?;
+
+// Als Markdown rendern
+let renderer = MarkdownRenderer::default();
+let markdown = renderer.render(&project);
+
+// Zurück nach XML schreiben
+let xml_output = writer::write(&project)?;
+
+// Als Mnemonik schreiben
+let mn_output = parser::write_mnemonic(&project);
+
+// Roundtrip validieren
+let result = validator::validate(&xml_string)?;
+assert!(result.roundtrip_ok);
+```
+
+## Benchmarks
+
+| Testdatei | Parsezeit |
+|-----------|-----------|
+| self_hold.xml | ~24 us |
+| interlock.xml | ~22 us |
+| timer.xml | ~21 us |
+| emergency_stop.xml | ~16 us |

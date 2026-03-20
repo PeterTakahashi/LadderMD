@@ -1,0 +1,58 @@
+# Demarrage rapide
+
+## Convertir du PLCopen XML en Markdown
+
+```bash
+# Sortie sur stdout
+laddermd-cli convert input.xml
+
+# Sortie dans un fichier
+laddermd-cli convert input.xml -o output.md
+```
+
+## Convertir du mnemonique Mitsubishi en Markdown
+
+```bash
+laddermd-cli convert input.mn
+```
+
+Exemple de fichier mnemonique :
+
+```
+LD  X001
+AND X002
+OR  Y001
+OUT Y001
+LD  X003
+RST Y001
+END
+```
+
+## Afficher les informations du projet
+
+```bash
+$ laddermd-cli info input.xml
+Project: SelfHoldTest
+  Program: Main
+    Rungs: 2
+    Contacts: 4, Coils: 2, Blocks: 0
+```
+
+## Valider l'aller-retour
+
+```bash
+$ laddermd-cli validate input.xml
+Parse OK: 2 rungs found
+Devices: 4 contacts, 2 coils, 0 blocks
+Roundtrip OK: all rungs logically equivalent
+```
+
+## Conversion de format
+
+```bash
+# Mnemonique Mitsubishi -> PLCopen XML
+laddermd-cli mn2xml input.mn -o output.xml
+
+# PLCopen XML -> Mnemonique Mitsubishi
+laddermd-cli xml2mn input.xml -o output.mn
+```
