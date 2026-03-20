@@ -1,0 +1,17 @@
+[package]
+name = "laddermd-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+quick-xml = { version = "0.37", features = ["serialize"] }
+serde = { version = "1", features = ["derive"] }
+thiserror = "2"
+
+[dev-dependencies]
+criterion = { version = "0.5", features = ["html_reports"] }
+pretty_assertions = "1"
+
+[[bench]]
+name = "parser_bench"
+harness = false
