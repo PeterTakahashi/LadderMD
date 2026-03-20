@@ -5,3 +5,6 @@
 *~
 .DS_Store
 node_modules
+.commitlog-ai/cache.json
+.commitlog-ai/timeline.json
+.commitlog-ai/server.pid
