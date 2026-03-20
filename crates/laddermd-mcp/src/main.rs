@@ -12,6 +12,7 @@ use std::io::{self, BufRead, Write};
 
 #[derive(Deserialize)]
 struct JsonRpcRequest {
+    #[allow(dead_code)]
     jsonrpc: String,
     id: Option<Value>,
     method: String,

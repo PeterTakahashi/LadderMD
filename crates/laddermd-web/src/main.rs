@@ -37,10 +37,6 @@ struct ConvertResponse {
     rung_count: usize,
 }
 
-#[derive(Serialize)]
-struct ErrorResponse {
-    error: String,
-}
 
 #[derive(Deserialize)]
 struct ValidateRequest {
