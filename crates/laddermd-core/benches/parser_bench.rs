@@ -12,6 +12,8 @@ fn bench_parse_all(c: &mut Criterion) {
         ("interlock", fixture("interlock.xml")),
         ("timer", fixture("timer.xml")),
         ("emergency_stop", fixture("emergency_stop.xml")),
+        ("counter", fixture("counter.xml")),
+        ("comparison", fixture("comparison.xml")),
     ];
 
     for (name, xml) in &fixtures {

@@ -121,12 +121,18 @@ impl MarkdownRenderer {
 
         for block in &blocks {
             let expr = self.build_expression(block.local_id, &inputs, &elem_by_id);
-            writeln!(
-                buf,
-                "LOGIC: {}({}) IN = {}",
-                block.type_name, block.instance_name, expr
-            )
-            .unwrap();
+            let name_part = if block.instance_name.is_empty() {
+                block.type_name.clone()
+            } else {
+                format!("{}({})", block.type_name, block.instance_name)
+            };
+            // Find the primary input parameter name
+            let primary_param = block
+                .parameters
+                .first()
+                .map(|(name, _)| name.as_str())
+                .unwrap_or("IN");
+            writeln!(buf, "LOGIC: {} {} = {}", name_part, primary_param, expr).unwrap();
         }
 
         if !coils.is_empty() || !blocks.is_empty() {
@@ -164,7 +170,12 @@ impl MarkdownRenderer {
                             }
                         }
                         RungElement::Block(b) => {
-                            format!("{}.Q", b.instance_name)
+                            let name = if b.instance_name.is_empty() {
+                                &b.type_name
+                            } else {
+                                &b.instance_name
+                            };
+                            format!("{name}.OUT")
                         }
                         RungElement::Coil(c) => c.variable.clone(),
                     }
@@ -255,7 +266,13 @@ impl MarkdownRenderer {
                     };
                     format!("({})", label)
                 }
-                RungElement::Block(b) => format!("[{} {}]", b.type_name, b.instance_name),
+                RungElement::Block(b) => {
+                    if b.instance_name.is_empty() {
+                        format!("[{}]", b.type_name)
+                    } else {
+                        format!("[{} {}]", b.type_name, b.instance_name)
+                    }
+                }
                 _ => String::new(),
             };
 
@@ -346,7 +363,13 @@ impl MarkdownRenderer {
                             ContactType::NormallyClosed => format!("[/{var}]"),
                         }
                     }
-                    RungElement::Block(b) => format!("[{} {}]", b.type_name, b.instance_name),
+                    RungElement::Block(b) => {
+                    if b.instance_name.is_empty() {
+                        format!("[{}]", b.type_name)
+                    } else {
+                        format!("[{} {}]", b.type_name, b.instance_name)
+                    }
+                }
                     RungElement::Coil(c) => format!("({})", c.variable),
                 }
             } else {
@@ -448,5 +471,31 @@ mod tests {
         assert!(md.contains("LOGIC:"));
         assert!(!md.contains("| Device |"));
         assert!(!md.contains("```"));
+    }
+
+    #[test]
+    fn render_counter() {
+        let project = parser::parse(&fixture("counter.xml")).unwrap();
+        let renderer = MarkdownRenderer::default();
+        let md = renderer.render(&project);
+
+        assert!(md.contains("Block(CTU)"));
+        assert!(md.contains("CTU1"));
+        assert!(md.contains("Block(CTD)"));
+        assert!(md.contains("CTD1"));
+        assert!(md.contains("### Rung 1"));
+        assert!(md.contains("### Rung 4"));
+    }
+
+    #[test]
+    fn render_comparison() {
+        let project = parser::parse(&fixture("comparison.xml")).unwrap();
+        let renderer = MarkdownRenderer::default();
+        let md = renderer.render(&project);
+
+        assert!(md.contains("Block(GT)"));
+        assert!(md.contains("Block(ADD)"));
+        assert!(md.contains("Block(EQ)"));
+        assert!(md.contains("(Y001)"));
     }
 }

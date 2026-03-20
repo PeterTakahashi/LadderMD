@@ -413,4 +413,32 @@ mod tests {
         assert_eq!(result.contacts, 3);
         assert_eq!(result.coils, 1);
     }
+
+    #[test]
+    fn roundtrip_counter() {
+        let result = validate(&fixture("counter.xml")).unwrap();
+        assert!(result.parse_ok);
+        assert!(
+            result.roundtrip_ok,
+            "Roundtrip failed: {:?}",
+            result.errors
+        );
+        assert_eq!(result.total_rungs, 4);
+        assert_eq!(result.blocks, 2);
+        assert_eq!(result.contacts, 4);
+        assert_eq!(result.coils, 2);
+    }
+
+    #[test]
+    fn roundtrip_comparison() {
+        let result = validate(&fixture("comparison.xml")).unwrap();
+        assert!(result.parse_ok);
+        assert!(
+            result.roundtrip_ok,
+            "Roundtrip failed: {:?}",
+            result.errors
+        );
+        assert_eq!(result.total_rungs, 3);
+        assert_eq!(result.blocks, 3);
+    }
 }

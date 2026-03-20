@@ -151,6 +151,8 @@ LOGIC: Y001 = (X001 AND X002 OR Y001)
 | Interlock | Mutual exclusion via NC contacts | `interlock.xml` |
 | Timer | TON on-delay timer block | `timer.xml` |
 | Emergency stop | NC emergency stop + self-hold | `emergency_stop.xml` |
+| Counter | CTU (count up) and CTD (count down) blocks | `counter.xml` |
+| Comparison / Arithmetic | GT, EQ, ADD and other function blocks | `comparison.xml` |
 
 ## Architecture
 
@@ -217,8 +219,8 @@ cargo bench
 ### Near-term (v0.x)
 
 - [x] Basic circuits: self-hold, interlock, timer, emergency stop
-- [ ] Counter blocks (CTU, CTD)
-- [ ] Comparison and arithmetic blocks
+- [x] Counter blocks (CTU, CTD)
+- [x] Comparison and arithmetic blocks (GT, GE, EQ, LE, LT, NE, ADD, SUB, MUL, DIV, MOD)
 
 ### Mid-term (v1.x)
 

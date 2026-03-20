@@ -607,4 +607,119 @@ mod tests {
         assert!(coil_connections.iter().any(|c| c.from_id == 3)); // from X002
         assert!(coil_connections.iter().any(|c| c.from_id == 4)); // from Y001 contact
     }
+
+    #[test]
+    fn parse_counter() {
+        let xml = fixture("counter.xml");
+        let project = parse(&xml).unwrap();
+
+        assert_eq!(project.name, "CounterTest");
+        let prog = &project.programs[0];
+        assert_eq!(prog.rungs.len(), 4);
+
+        // Rung 1: X001 contact + CTU block
+        let rung1 = &prog.rungs[0];
+        let blocks: Vec<_> = rung1
+            .elements
+            .iter()
+            .filter_map(|e| match e {
+                model::RungElement::Block(b) => Some(b),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].type_name, "CTU");
+        assert_eq!(blocks[0].instance_name, "CTU1");
+        assert!(blocks[0]
+            .parameters
+            .iter()
+            .any(|(name, _)| name == "CU"));
+        assert!(blocks[0]
+            .parameters
+            .iter()
+            .any(|(name, _)| name == "PV"));
+
+        // Rung 3: X003 contact + CTD block
+        let rung3 = &prog.rungs[2];
+        let blocks3: Vec<_> = rung3
+            .elements
+            .iter()
+            .filter_map(|e| match e {
+                model::RungElement::Block(b) => Some(b),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(blocks3.len(), 1);
+        assert_eq!(blocks3[0].type_name, "CTD");
+        assert_eq!(blocks3[0].instance_name, "CTD1");
+    }
+
+    #[test]
+    fn parse_comparison() {
+        let xml = fixture("comparison.xml");
+        let project = parse(&xml).unwrap();
+
+        assert_eq!(project.name, "ComparisonTest");
+        let prog = &project.programs[0];
+        assert_eq!(prog.rungs.len(), 3);
+
+        // Rung 1: X001 + GT block + Y001 coil
+        let rung1 = &prog.rungs[0];
+        let blocks: Vec<_> = rung1
+            .elements
+            .iter()
+            .filter_map(|e| match e {
+                model::RungElement::Block(b) => Some(b),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(blocks.len(), 1);
+        assert_eq!(blocks[0].type_name, "GT");
+        assert!(blocks[0].instance_name.is_empty()); // functions have no instance
+        assert!(blocks[0]
+            .parameters
+            .iter()
+            .any(|(name, _)| name == "IN1"));
+        assert!(blocks[0]
+            .parameters
+            .iter()
+            .any(|(name, _)| name == "IN2"));
+
+        let coils: Vec<_> = rung1
+            .elements
+            .iter()
+            .filter_map(|e| match e {
+                model::RungElement::Coil(c) => Some(c),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(coils.len(), 1);
+        assert_eq!(coils[0].variable, "Y001");
+
+        // Rung 2: ADD block
+        let rung2 = &prog.rungs[1];
+        let blocks2: Vec<_> = rung2
+            .elements
+            .iter()
+            .filter_map(|e| match e {
+                model::RungElement::Block(b) => Some(b),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(blocks2.len(), 1);
+        assert_eq!(blocks2[0].type_name, "ADD");
+
+        // Rung 3: EQ block (standalone, no coil)
+        let rung3 = &prog.rungs[2];
+        let blocks3: Vec<_> = rung3
+            .elements
+            .iter()
+            .filter_map(|e| match e {
+                model::RungElement::Block(b) => Some(b),
+                _ => None,
+            })
+            .collect();
+        assert_eq!(blocks3.len(), 1);
+        assert_eq!(blocks3[0].type_name, "EQ");
+    }
 }

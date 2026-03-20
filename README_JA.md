@@ -155,6 +155,8 @@ LOGIC: Y001 = (X001 AND X002 OR Y001)
 | インターロック回路 | b接点による相互排他 | `interlock.xml` |
 | タイマー回路 | TONオンディレイタイマー | `timer.xml` |
 | 非常停止回路 | b接点の非常停止 + 自己保持 | `emergency_stop.xml` |
+| カウンター回路 | CTU（カウントアップ）・CTD（カウントダウン） | `counter.xml` |
+| 比較・演算回路 | GT, EQ, ADDなどのファンクションブロック | `comparison.xml` |
 
 ## アーキテクチャ
 
@@ -221,8 +223,8 @@ cargo bench
 ### 短期（v0.x）
 
 - [x] 基本回路: 自己保持、インターロック、タイマー、非常停止
-- [ ] カウンターブロック（CTU, CTD）
-- [ ] 比較・演算ブロック
+- [x] カウンターブロック（CTU, CTD）
+- [x] 比較・演算ブロック（GT, GE, EQ, LE, LT, NE, ADD, SUB, MUL, DIV, MOD）
 
 ### 中期（v1.x）
 

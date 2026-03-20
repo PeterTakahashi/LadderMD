@@ -356,8 +356,9 @@ fn write_rung(
                     writeln!(buf, "                  <connectionPointIn>")?;
                     writeln!(buf, "                    <relPosition x=\"0\" y=\"0\"/>")?;
 
-                    // Only connect the first parameter (IN) to upstream
-                    if param_name == "IN" {
+                    // Connect the first input parameter to upstream elements
+                    let is_primary = is_primary_input(&b.type_name, param_name);
+                    if is_primary {
                         if let Some(refs) = incoming.get(&b.local_id) {
                             for &ref_id in refs {
                                 let actual_ref = if element_ids.contains(&ref_id) {
@@ -381,16 +382,24 @@ fn write_rung(
                 writeln!(buf, "              </inputVariables>")?;
                 writeln!(buf, "              <inOutVariables/>")?;
                 writeln!(buf, "              <outputVariables>")?;
-                writeln!(buf, "                <variable formalParameter=\"Q\">")?;
-                writeln!(buf, "                  <connectionPointOut>")?;
-                writeln!(buf, "                    <relPosition x=\"80\" y=\"0\"/>")?;
-                writeln!(buf, "                  </connectionPointOut>")?;
-                writeln!(buf, "                </variable>")?;
-                writeln!(buf, "                <variable formalParameter=\"ET\">")?;
-                writeln!(buf, "                  <connectionPointOut>")?;
-                writeln!(buf, "                    <relPosition x=\"80\" y=\"30\"/>")?;
-                writeln!(buf, "                  </connectionPointOut>")?;
-                writeln!(buf, "                </variable>")?;
+
+                let output_params = output_params_for_block(&b.type_name);
+                for (i, param) in output_params.iter().enumerate() {
+                    writeln!(
+                        buf,
+                        "                <variable formalParameter=\"{}\">",
+                        param
+                    )?;
+                    writeln!(buf, "                  <connectionPointOut>")?;
+                    writeln!(
+                        buf,
+                        "                    <relPosition x=\"80\" y=\"{}\"/>",
+                        i as i32 * 30
+                    )?;
+                    writeln!(buf, "                  </connectionPointOut>")?;
+                    writeln!(buf, "                </variable>")?;
+                }
+
                 writeln!(buf, "              </outputVariables>")?;
                 writeln!(buf, "            </block>")?;
             }
@@ -398,6 +407,35 @@ fn write_rung(
     }
 
     Ok(())
+}
+
+/// Check if a given input parameter is the primary (connected to upstream) input.
+fn is_primary_input(type_name: &str, param_name: &str) -> bool {
+    match type_name {
+        "CTU" => param_name == "CU",
+        "CTD" => param_name == "CD",
+        "CTUD" => param_name == "CU" || param_name == "CD",
+        "GT" | "GE" | "EQ" | "LE" | "LT" | "NE" | "ADD" | "SUB" | "MUL" | "DIV" | "MOD" => {
+            param_name == "IN1"
+        }
+        _ => param_name == "IN",
+    }
+}
+
+/// Return the standard output parameter names for a given block type.
+fn output_params_for_block(type_name: &str) -> Vec<&'static str> {
+    match type_name {
+        // Timers
+        "TON" | "TOF" | "TP" => vec!["Q", "ET"],
+        // Counters
+        "CTU" | "CTD" | "CTUD" => vec!["Q", "CV"],
+        // Comparison / arithmetic / logic functions (single output)
+        "GT" | "GE" | "EQ" | "LE" | "LT" | "NE" | "ADD" | "SUB" | "MUL" | "DIV" | "MOD"
+        | "AND" | "OR" | "XOR" | "NOT" | "SEL" | "MUX" | "MOVE" | "ABS" | "SQRT" | "MAX"
+        | "MIN" | "LIMIT" => vec!["OUT"],
+        // Unknown block types: default to single OUT
+        _ => vec!["OUT"],
+    }
 }
 
 fn xml_escape(s: &str) -> String {

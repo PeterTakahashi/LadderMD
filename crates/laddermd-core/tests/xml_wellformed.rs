@@ -49,6 +49,8 @@ fn all_fixtures_have_project_root() {
         "../../tests/fixtures/interlock.xml",
         "../../tests/fixtures/timer.xml",
         "../../tests/fixtures/emergency_stop.xml",
+        "../../tests/fixtures/counter.xml",
+        "../../tests/fixtures/comparison.xml",
     ];
     for path in &fixtures {
         let xml = fs::read_to_string(path).unwrap();
@@ -70,6 +72,8 @@ fn all_fixtures_have_ld_body() {
         "../../tests/fixtures/interlock.xml",
         "../../tests/fixtures/timer.xml",
         "../../tests/fixtures/emergency_stop.xml",
+        "../../tests/fixtures/counter.xml",
+        "../../tests/fixtures/comparison.xml",
     ];
     for path in &fixtures {
         let xml = fs::read_to_string(path).unwrap();
@@ -79,4 +83,14 @@ fn all_fixtures_have_ld_body() {
             "{path}: missing leftPowerRail"
         );
     }
+}
+
+#[test]
+fn counter_is_wellformed() {
+    assert_wellformed_xml("../../tests/fixtures/counter.xml");
+}
+
+#[test]
+fn comparison_is_wellformed() {
+    assert_wellformed_xml("../../tests/fixtures/comparison.xml");
 }
